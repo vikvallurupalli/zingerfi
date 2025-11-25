@@ -34,7 +34,7 @@ export default function SendRequest() {
         .from("profiles")
         .select("id")
         .eq("email", email)
-        .single();
+        .maybeSingle();
 
       if (receiverError || !receiverProfile) {
         toast.error("User not found with this email address");
@@ -47,7 +47,7 @@ export default function SendRequest() {
         .select("id")
         .eq("user_id", user.id)
         .eq("confide_user_id", receiverProfile.id)
-        .single();
+        .maybeSingle();
 
       if (existingConfide) {
         toast.error("This user is already in your confide list");
@@ -61,7 +61,7 @@ export default function SendRequest() {
         .eq("sender_id", user.id)
         .eq("receiver_id", receiverProfile.id)
         .eq("status", "pending")
-        .single();
+        .maybeSingle();
 
       if (existingRequest) {
         toast.error("You already have a pending request to this user");
