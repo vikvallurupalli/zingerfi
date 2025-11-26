@@ -190,7 +190,7 @@ export default function Encrypt() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 rows={6}
-                className="resize-none"
+                className="resize-none text-base"
               />
               <div className="flex gap-2">
                 <Button
