@@ -127,7 +127,7 @@ export default function Encrypt() {
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-[42rem] mx-auto space-y-6">
         <div className="text-center space-y-2">
           <div className="flex justify-center mb-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
