@@ -142,7 +142,17 @@ export default function Encrypt() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Select Confide</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle>Select Confide</CardTitle>
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="h-6 text-xs px-2"
+                onClick={() => window.location.href = '/send-request'}
+              >
+                Add Confidee
+              </Button>
+            </div>
             <CardDescription>Choose who can decrypt this message</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -163,17 +173,10 @@ export default function Encrypt() {
                 No confides yet. Send a request to add someone.
               </p>
             )}
-            <div className="space-y-2 pt-2 border-t">
+            <div className="pt-2 border-t">
               <p className="text-sm text-muted-foreground">
                 Note: Confidees must have registered by logging in with their Google account.
               </p>
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => window.location.href = '/send-request'}
-              >
-                Add Confidee
-              </Button>
             </div>
           </CardContent>
         </Card>
@@ -230,6 +233,16 @@ export default function Encrypt() {
             </div>
           )}
         </div>
+
+        {encryptedText && (
+          <Card className="bg-primary/5 border-primary/20">
+            <CardContent className="pt-6">
+              <p className="text-sm text-center text-muted-foreground">
+                Encryption complete! Use the buttons above to send or copy the encrypted message.
+              </p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </Layout>
   );
