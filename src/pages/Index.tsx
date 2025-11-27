@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Shield, Lock, Users, Smartphone, Share2, UserPlus, Mail, Key, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-// removed iphone image assets
+import iphoneImage from "@/assets/iphoneImage.png";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -15,7 +15,6 @@ export default function Index() {
   const [isInstallable, setIsInstallable] = useState(false);
   const [showHowToUse, setShowHowToUse] = useState(false);
   const [showInstallIOS, setShowInstallIOS] = useState(false);
-  const [showInstallAndroid, setShowInstallAndroid] = useState(false);
   // iphone image removed; no hover or big-image state needed
 
   useEffect(() => {
@@ -117,18 +116,40 @@ export default function Index() {
                   </Button>
                 </CardContent>
               </Card>
-              {/* image moved to right column to sit at the far right on the row */}
+              {/* small zoomed iPhone image inserted to visually sit between the CTA and heading on larger screens */}
+              <div className="hidden md:flex items-center ml-2 lg:ml-6 -translate-x-2">
+                <img 
+                  src={iphoneImage} 
+                  alt="Zoomed iPhone showing encrypted message" 
+                  className="w-[28rem] h-auto shadow-lg rounded-md"
+                />
+              </div>
 
             </div>
             <div className="space-y-4 text-center sm:text-left col-span-1">
               {/* iPhone image removed as requested */}
 
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight">
-                Secure End-to-End Encryption
-              </h2>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Cracking this with classical computers would take billions of years
-              </p>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">
+                  Secure End-to-End Encryption
+                </h2>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Cracking this with classical computers would take billions of years
+                </p>
+                <div className="mt-4 mb-4 flex justify-center sm:justify-start">
+                  <Card className="cursor-pointer hover:bg-accent transition-colors w-full max-w-md" onClick={() => setShowInstallIOS(true)}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Smartphone className="h-5 w-5" />
+                        iPhone / iPad / Android
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">Click to view installation instructions →</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+
             </div>
           </div>
         </div>
@@ -140,30 +161,8 @@ export default function Index() {
           <div className="max-w-4xl mx-auto">
 
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card className="cursor-pointer hover:bg-accent transition-colors" onClick={() => setShowInstallIOS(true)}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Smartphone className="h-5 w-5" />
-                    iPhone / iPad
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Click to view installation instructions →</p>
-                </CardContent>
-              </Card>
-
-              <Card className="cursor-pointer hover:bg-accent transition-colors" onClick={() => setShowInstallAndroid(true)}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Smartphone className="h-5 w-5" />
-                    Android
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Click to view installation instructions →</p>
-                </CardContent>
-              </Card>
+            <div className="grid md:grid-cols-1 gap-6">
+              {/* Install card moved into hero section above; keeping this area for future content */}
             </div>
           </div>
         </div>
@@ -182,61 +181,58 @@ export default function Index() {
       <Dialog open={showInstallIOS} onOpenChange={setShowInstallIOS}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-3xl">Install on iPhone / iPad</DialogTitle>
+            <DialogTitle className="text-3xl">Install on iPhone / iPad / Android</DialogTitle>
           </DialogHeader>
           
           <div className="space-y-6 py-4">
-            <ol className="list-decimal list-inside space-y-4 text-sm">
-              <li className="text-base">
-                <span className="font-semibold">Open Zinger in Safari browser</span>
-                <p className="text-muted-foreground mt-1">Launch Safari and navigate to Zinger</p>
-              </li>
-              <li className="text-base">
-                <span className="font-semibold">Tap the Share button</span>
-                <p className="text-muted-foreground mt-1">Look for the square icon with an arrow at the bottom of the screen</p>
-              </li>
-              <li className="text-base">
-                <span className="font-semibold">Scroll down and tap "Add to Home Screen"</span>
-                <p className="text-muted-foreground mt-1">You may need to scroll in the share menu to find this option</p>
-              </li>
-              <li className="text-base">
-                <span className="font-semibold">Tap "Add" to confirm</span>
-                <p className="text-muted-foreground mt-1">The app icon will appear on your home screen and work like a native app</p>
-              </li>
-            </ol>
+            <section>
+              <h3 className="text-xl font-semibold mb-2">iPhone / iPad (Safari)</h3>
+              <ol className="list-decimal list-inside space-y-4 text-sm">
+                <li className="text-base">
+                  <span className="font-semibold">Open Zinger in Safari browser</span>
+                  <p className="text-muted-foreground mt-1">Launch  your facovite browser and navigate to Zinger</p>
+                </li>
+                <li className="text-base">
+                  <span className="font-semibold">Tap the Share button</span>
+                  <p className="text-muted-foreground mt-1">Look for the square icon with an arrow at the bottom of the screen</p>
+                </li>
+                <li className="text-base">
+                  <span className="font-semibold">Scroll down and tap "Add to Home Screen"</span>
+                  <p className="text-muted-foreground mt-1">You may need to scroll in the share menu to find this option</p>
+                </li>
+                <li className="text-base">
+                  <span className="font-semibold">Tap "Add" to confirm</span>
+                  <p className="text-muted-foreground mt-1">The app icon will appear on your home screen and work like a native app</p>
+                </li>
+              </ol>
+            </section>
+
+            <section>
+              <h3 className="text-xl font-semibold mb-2">Android (Chrome)</h3>
+              <ol className="list-decimal list-inside space-y-4 text-sm">
+                <li className="text-base">
+                  <span className="font-semibold">Open Zinger in Chrome browser</span>
+                  <p className="text-muted-foreground mt-1">Launch Chrome and navigate to Zinger</p>
+                </li>
+                <li className="text-base">
+                  <span className="font-semibold">Tap the menu (three dots) in the top right</span>
+                  <p className="text-muted-foreground mt-1">This opens the Chrome menu options</p>
+                </li>
+                <li className="text-base">
+                  <span className="font-semibold">Tap "Add to Home screen" or "Install app"</span>
+                  <p className="text-muted-foreground mt-1">The exact option name may vary depending on your Chrome version</p>
+                </li>
+                <li className="text-base">
+                  <span className="font-semibold">Tap "Add" or "Install" to confirm</span>
+                  <p className="text-muted-foreground mt-1">You may see an install prompt automatically, or find the option in your browser menu</p>
+                </li>
+              </ol>
+            </section>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Install Android Modal */}
-      <Dialog open={showInstallAndroid} onOpenChange={setShowInstallAndroid}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-3xl">Install on Android</DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-6 py-4">
-            <ol className="list-decimal list-inside space-y-4 text-sm">
-              <li className="text-base">
-                <span className="font-semibold">Open Zinger in Chrome browser</span>
-                <p className="text-muted-foreground mt-1">Launch Chrome and navigate to Zinger</p>
-              </li>
-              <li className="text-base">
-                <span className="font-semibold">Tap the menu (three dots) in the top right</span>
-                <p className="text-muted-foreground mt-1">This opens the Chrome menu options</p>
-              </li>
-              <li className="text-base">
-                <span className="font-semibold">Tap "Add to Home screen" or "Install app"</span>
-                <p className="text-muted-foreground mt-1">The exact option name may vary depending on your Chrome version</p>
-              </li>
-              <li className="text-base">
-                <span className="font-semibold">Tap "Add" or "Install" to confirm</span>
-                <p className="text-muted-foreground mt-1">You may see an install prompt automatically, or find the option in your browser menu</p>
-              </li>
-            </ol>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* Android install instructions removed — consolidated into the iPhone/iPad/Android card above */}
 
       {/* How to Use Modal */}
       <Dialog open={showHowToUse} onOpenChange={setShowHowToUse}>
