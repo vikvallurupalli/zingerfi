@@ -131,7 +131,7 @@ export default function Decrypt() {
 
   return (
     <Layout>
-      <div className="max-w-[42rem] mx-auto space-y-6">
+      <div className="max-w-[70rem] mx-auto space-y-6">
         <div className="text-center space-y-2">
           <div className="flex justify-center mb-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/10">
@@ -144,16 +144,16 @@ export default function Decrypt() {
           </p>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Select Sender</CardTitle>
-            <CardDescription>Choose the confide who sent you this message</CardDescription>
+        <Card className="max-w-[25rem] mx-auto">
+          <CardHeader className="py-3 px-4">
+            <CardTitle className="text-base">Select Sender</CardTitle>
+            <CardDescription className="text-xs">Choose the confide who sent you this message</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 pb-4">
             <div className="space-y-2">
-              <Label htmlFor="sender-select">Sender</Label>
+              <Label htmlFor="sender-select" className="text-xs">Sender</Label>
               <Select value={senderEmail} onValueChange={setSenderEmail}>
-                <SelectTrigger id="sender-select">
+                <SelectTrigger id="sender-select" className="h-8 text-sm">
                   <SelectValue placeholder="Select a confide..." />
                 </SelectTrigger>
                 <SelectContent className="bg-background">
@@ -165,7 +165,7 @@ export default function Decrypt() {
                 </SelectContent>
               </Select>
               {confides.length === 0 && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   No confides found. Add confides to decrypt messages.
                 </p>
               )}
@@ -173,38 +173,38 @@ export default function Decrypt() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Encrypted Message</CardTitle>
-            <CardDescription>Paste the encrypted text here</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Textarea
-              placeholder="Paste encrypted text here..."
-              value={encryptedText}
-              onChange={(e) => setEncryptedText(e.target.value)}
-              rows={8}
-              className="resize-none font-mono-encrypted text-xs break-all"
-            />
-            <div className="flex gap-2">
-              <Button
-                onClick={handleDecrypt}
-                disabled={loading || !encryptedText || !senderEmail}
-                className="gap-2"
-              >
-                <Unlock className="h-4 w-4" />
-                Decrypt
-              </Button>
-              <Button variant="outline" onClick={handleClear} className="gap-2">
-                <Trash2 className="h-4 w-4" />
-                Clear
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="scale-[0.6] origin-top-left md:origin-top w-[166.67%] md:w-[166.67%]">
+            <CardHeader>
+              <CardTitle>Encrypted Message</CardTitle>
+              <CardDescription>Paste the encrypted text here</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Textarea
+                placeholder="Paste encrypted text here..."
+                value={encryptedText}
+                onChange={(e) => setEncryptedText(e.target.value)}
+                rows={8}
+                className="resize-none font-mono-encrypted text-xs break-all"
+              />
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleDecrypt}
+                  disabled={loading || !encryptedText || !senderEmail}
+                  className="gap-2"
+                >
+                  <Unlock className="h-4 w-4" />
+                  Decrypt
+                </Button>
+                <Button variant="outline" onClick={handleClear} className="gap-2">
+                  <Trash2 className="h-4 w-4" />
+                  Clear
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
-        {decryptedMessage && (
-          <Card className="border-success/50">
+          <Card className={`scale-[0.6] origin-top-right md:origin-top w-[166.67%] md:w-[166.67%] ml-auto md:ml-0 border-success/50 ${!decryptedMessage ? 'opacity-50' : ''}`}>
             <CardHeader>
               <CardTitle>Decrypted Message</CardTitle>
               <CardDescription>Your decrypted message is ready</CardDescription>
@@ -214,17 +214,18 @@ export default function Decrypt() {
                 <Textarea
                   value={decryptedMessage}
                   readOnly
-                  rows={6}
+                  rows={8}
+                  placeholder="Decrypted message will appear here..."
                   className="resize-none"
                 />
               </div>
-              <Button onClick={handleCopy} className="w-full gap-2">
+              <Button onClick={handleCopy} disabled={!decryptedMessage} className="w-full gap-2">
                 <Copy className="h-4 w-4" />
                 Copy to Clipboard
               </Button>
             </CardContent>
           </Card>
-        )}
+        </div>
       </div>
     </Layout>
   );
