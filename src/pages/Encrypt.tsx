@@ -107,7 +107,7 @@ export default function Encrypt() {
   };
 
   const createShareLink = () => {
-    return `https://zingerfi.snitchon.org/decrypt?message=${encodeURIComponent(encryptedText)}`;
+    return `https://zinger.snitchon.org/decrypt?message=${encodeURIComponent(encryptedText)}`;
   };
 
   const handleSMS = () => {
