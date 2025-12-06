@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Shield, Lock, Users, Smartphone, Share2, UserPlus, Mail, Key, LogOut } from "lucide-react";
+import { Shield, Lock, Users, Smartphone, Share2, UserPlus, Mail, Key, LogOut, Sparkles } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import iphoneImage from "@/assets/iphoneImage.png";
 
@@ -15,14 +15,11 @@ export default function Index() {
   const [isInstallable, setIsInstallable] = useState(false);
   const [showHowToUse, setShowHowToUse] = useState(false);
   const [showInstallIOS, setShowInstallIOS] = useState(false);
-  // iphone image removed; no hover or big-image state needed
 
   useEffect(() => {
-    // Check if iOS
     const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     setIsIOS(iOS);
 
-    // Listen for the beforeinstallprompt event
     const handler = (e: any) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -30,18 +27,13 @@ export default function Index() {
     };
 
     window.addEventListener('beforeinstallprompt', handler);
-
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
-  // removed hover handling for iphone image
-
   const handleInstall = async () => {
     if (!deferredPrompt) return;
-
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    
     if (outcome === 'accepted') {
       setDeferredPrompt(null);
       setIsInstallable(false);
@@ -57,23 +49,36 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-background">
+      {/* Secret Caption Banner */}
+      <div className="bg-primary/10 border-b border-primary/20">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-center gap-2">
+          <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+          <span className="text-lg md:text-xl font-bold text-primary tracking-wide italic">
+            Sshhhhh its a secret
+          </span>
+          <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+        </div>
+      </div>
+
       {/* Header */}
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-card/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
-              <Shield className="h-6 w-6 text-primary-foreground" />
+            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg">
+              <Shield className="h-7 w-7 text-primary-foreground" />
             </div>
-            <h1 className="text-2xl font-bold">Zinger</h1>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Zinger
+            </h1>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {user && (
-              <span className="text-sm text-muted-foreground hidden md:inline">
+              <span className="text-sm text-muted-foreground hidden md:inline px-3 py-1 bg-secondary rounded-full">
                 {user.email}
               </span>
             )}
-            <Button onClick={handleGetStarted}>
+            <Button onClick={handleGetStarted} size="lg" className="shadow-md hover:shadow-lg transition-shadow">
               {user ? "Go to Dashboard" : "Get Started"}
             </Button>
             {user && (
@@ -87,97 +92,100 @@ export default function Index() {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 pt-20 pb-8">
+      <section className="container mx-auto px-4 py-16 md:py-24">
         <div className="max-w-6xl mx-auto">
-          <div className="flex justify-center mb-8">
-            <Button 
-              variant="link" 
-              onClick={() => setShowHowToUse(true)}
-              className="text-lg"
-            >
-              How to Use Zinger →
-            </Button>
+          {/* Main Hero Content */}
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
+              Secure End-to-End Encryption
+            </h2>
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
+              Cracking this with classical computers would take <span className="font-bold text-primary">billions of years</span>
+            </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
-            <div className="flex flex-col sm:flex-row items-center gap-6 justify-center sm:justify-start">
 
-              {/* CTA Card */}
-              <Card className="h-fit lg:sticky lg:top-24 w-full max-w-none sm:max-w-[220px] md:max-w-[320px] ml-0 sm:ml-6 lg:ml-8 p-6 sm:p-8">
-                <CardHeader>
-                  <CardTitle>Get Started</CardTitle>
-                  <CardDescription>
-                    Start encrypting your messages securely
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Button size="lg" onClick={handleGetStarted} className="w-full gap-2">
-                    <Key className="h-5 w-5" />
-                    Start Encrypting
-                  </Button>
-                </CardContent>
-              </Card>
-              {/* small zoomed iPhone image inserted to visually sit between the CTA and heading on larger screens */}
-              <div className="hidden md:flex items-center ml-2 lg:ml-6 -translate-x-2">
-                <img 
-                  src={iphoneImage} 
-                  alt="Zoomed iPhone showing encrypted message" 
-                  className="w-[28rem] h-auto shadow-lg rounded-md"
-                />
-              </div>
-
-            </div>
-            <div className="space-y-4 text-center sm:text-left col-span-1">
-              {/* iPhone image removed as requested */}
-
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">
-                  Secure End-to-End Encryption
-                </h2>
-                <p className="text-sm sm:text-base text-muted-foreground">
-                  Cracking this with classical computers would take billions of years
-                </p>
-                <div className="mt-4 mb-4 flex justify-center sm:justify-start">
-                  <Card className="cursor-pointer hover:bg-accent transition-colors w-full max-w-md" onClick={() => setShowInstallIOS(true)}>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Smartphone className="h-5 w-5" />
-                        iPhone / iPad / Android
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">Click to view installation instructions →</p>
-                    </CardContent>
-                  </Card>
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {/* Start Encrypting Card */}
+            <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <CardHeader className="text-center">
+                <div className="mx-auto h-16 w-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-4">
+                  <Key className="h-8 w-8 text-primary" />
                 </div>
+                <CardTitle className="text-2xl">Start Encrypting</CardTitle>
+                <CardDescription className="text-base">
+                  Begin securing your messages now
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button size="lg" onClick={handleGetStarted} className="w-full gap-2 h-12 text-lg shadow-md">
+                  <Lock className="h-5 w-5" />
+                  {user ? "Go to Dashboard" : "Get Started"}
+                </Button>
+              </CardContent>
+            </Card>
 
+            {/* How to Use Card */}
+            <Card className="bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer" onClick={() => setShowHowToUse(true)}>
+              <CardHeader className="text-center">
+                <div className="mx-auto h-16 w-16 rounded-2xl bg-accent/20 flex items-center justify-center mb-4">
+                  <Users className="h-8 w-8 text-accent" />
+                </div>
+                <CardTitle className="text-2xl">How to Use</CardTitle>
+                <CardDescription className="text-base">
+                  Learn the simple 4-step process
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button size="lg" variant="outline" className="w-full gap-2 h-12 text-lg">
+                  <Share2 className="h-5 w-5" />
+                  View Guide →
+                </Button>
+              </CardContent>
+            </Card>
 
-            </div>
+            {/* Install App Card */}
+            <Card className="bg-gradient-to-br from-success/5 to-success/10 border-success/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer md:col-span-2 lg:col-span-1" onClick={() => setShowInstallIOS(true)}>
+              <CardHeader className="text-center">
+                <div className="mx-auto h-16 w-16 rounded-2xl bg-success/20 flex items-center justify-center mb-4">
+                  <Smartphone className="h-8 w-8 text-success" />
+                </div>
+                <CardTitle className="text-2xl">Install App</CardTitle>
+                <CardDescription className="text-base">
+                  iPhone, iPad & Android supported
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button size="lg" variant="secondary" className="w-full gap-2 h-12 text-lg">
+                  <Smartphone className="h-5 w-5" />
+                  View Instructions
+                </Button>
+              </CardContent>
+            </Card>
           </div>
-        </div>
-      </section>
 
-      {/* Install Instructions */}
-      <section className="bg-muted/30 py-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-
-
-            <div className="grid md:grid-cols-1 gap-6">
-              {/* Install card moved into hero section above; keeping this area for future content */}
+          {/* iPhone Mockup */}
+          <div className="flex justify-center">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 blur-3xl rounded-full opacity-50"></div>
+              <img 
+                src={iphoneImage} 
+                alt="iPhone showing encrypted message" 
+                className="relative w-full max-w-md h-auto shadow-2xl rounded-3xl"
+              />
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t py-8">
+      <footer className="border-t py-8 bg-card/50">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
           <p>&copy; 2025 Zinger. Secure encryption for everyone.</p>
         </div>
       </footer>
 
       {/* Install iOS Modal */}
-      {/* big image modal removed */}
-
       <Dialog open={showInstallIOS} onOpenChange={setShowInstallIOS}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -190,7 +198,7 @@ export default function Index() {
               <ol className="list-decimal list-inside space-y-4 text-sm">
                 <li className="text-base">
                   <span className="font-semibold">Open Zinger in Safari browser</span>
-                  <p className="text-muted-foreground mt-1">Launch  your facovite browser and navigate to Zinger</p>
+                  <p className="text-muted-foreground mt-1">Launch your favorite browser and navigate to Zinger</p>
                 </li>
                 <li className="text-base">
                   <span className="font-semibold">Tap the Share button</span>
@@ -232,8 +240,6 @@ export default function Index() {
         </DialogContent>
       </Dialog>
 
-      {/* Android install instructions removed — consolidated into the iPhone/iPad/Android card above */}
-
       {/* How to Use Modal */}
       <Dialog open={showHowToUse} onOpenChange={setShowHowToUse}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -250,7 +256,7 @@ export default function Index() {
 
             <div className="space-y-6">
               <div className="flex gap-4 items-start">
-                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0">
                   1
                 </div>
                 <div>
@@ -265,7 +271,7 @@ export default function Index() {
               </div>
 
               <div className="flex gap-4 items-start">
-                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0">
                   2
                 </div>
                 <div>
@@ -280,7 +286,7 @@ export default function Index() {
               </div>
 
               <div className="flex gap-4 items-start">
-                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0">
                   3
                 </div>
                 <div>
@@ -295,7 +301,7 @@ export default function Index() {
               </div>
 
               <div className="flex gap-4 items-start">
-                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0">
                   4
                 </div>
                 <div>
